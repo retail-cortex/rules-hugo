@@ -1,0 +1,37 @@
+load("@rules_hugo_rmcguinness//hugo:rules.bzl", "hugo_serve", "hugo_site", "hugo_theme")
+
+hugo_theme(
+    name = "book",
+    srcs = [
+        "@hugo_theme_book//:files",
+    ],
+)
+
+hugo_site(
+    name = "site_simple",
+    config = "config.yaml",
+    content = glob(["content/**"]),
+    layouts = glob(
+        ["layouts/**"],
+        allow_empty = True,
+    ),
+    static = glob(
+        ["static/**"],
+        allow_empty = True,
+    ),
+    theme = ":book",
+    verbose = True,
+)
+
+hugo_serve(
+    name = "site_serve",
+    dep = [":site_simple"],
+    quiet = False,
+    verbose = True,
+)
+
+sh_test(
+    name = "site_test",
+    srcs = ["site_test.sh"],
+    data = [":site_simple"],
+)
