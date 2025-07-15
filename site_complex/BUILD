@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_hugo_rmcguinness//hugo:rules.bzl", "hugo_serve", "hugo_site", "hugo_theme")
+load("@rules_hugo//hugo:rules.bzl", "hugo_serve", "hugo_site", "hugo_theme")
 
 hugo_theme(
     name = "hugo_theme_geekdoc",
