@@ -13,23 +13,36 @@ def _hugo_repository_impl(repository_ctx):
     os_arch = repository_ctx.attr.os_arch
 
     os_name = repository_ctx.os.name.lower()
-    if os_name.startswith("mac os"):
-        os_arch = "macOS-64bit"
-    elif os_name.find("windows") != -1:
-        os_arch = "Windows-64bit"
-    else:
-        os_arch = "Linux-64bit"
-    
+    if not os_arch:
+        if os_name.startswith("mac os"):
+            os_arch = "macOS-64bit"
+        elif os_name.find("windows") != -1:
+            os_arch = "Windows-64bit"
+        else:
+            os_arch = "Linux-64bit"
+
     url = "https://github.com/gohugoio/hugo/releases/download/v{version}/{hugo}_{version}_{os_arch}.tar.gz".format(
         hugo = hugo,
         os_arch = os_arch,
         version = repository_ctx.attr.version,
     )
 
-    repository_ctx.download_and_extract(
+    result = repository_ctx.download_and_extract(
         url = url,
         sha256 = repository_ctx.attr.sha256,
+        allow_fail=True,
     )
+
+    if not result.success:
+        url = "https://github.com/gohugoio/hugo/releases/download/v{version}/{hugo}_{version}_{os_arch}.tar.gz".format(
+            hugo = hugo,
+            os_arch = "darwin-universal",
+            version = repository_ctx.attr.version,
+        )
+        repository_ctx.download_and_extract(
+            url = url,
+            sha256 = repository_ctx.attr.sha256,
+        )
 
     repository_ctx.file("BUILD.bazel", HUGO_BUILD_FILE)
 
