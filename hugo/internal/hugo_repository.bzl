@@ -33,7 +33,7 @@ def _hugo_repository_impl(repository_ctx):
         allow_fail=True,
     )
 
-    if not result.success:
+    if not result.success and os_name.startswith("mac os"):
         url = "https://github.com/gohugoio/hugo/releases/download/v{version}/{hugo}_{version}_{os_arch}.tar.gz".format(
             hugo = hugo,
             os_arch = "darwin-universal",
