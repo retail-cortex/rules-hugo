@@ -1,0 +1,5 @@
+{
+  "url": "https://github.com/retail-cortex/rules-hugo/archive/refs/tags/v{version}.tar.gz",
+  "integrity": "sha256-{sha256}",
+  "strip_prefix": "rules-hugo-{version}"
+}
