@@ -3,6 +3,8 @@ module(
     version = "0.2.0",
 )
 
+bazel_dep(name = "rules_shell", version = "0.6.1")
+
 # Load the module extension for Hugo dependencies
 hugo_deps = use_extension("//hugo:extensions.bzl", "hugo_deps")
 

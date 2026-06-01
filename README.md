@@ -35,6 +35,8 @@ In your `MODULE.bazel`:
 
 ```python
 bazel_dep(name = "rules_hugo_rmcguinness", version = "0.2.0")
+# Required to load shell rules (like sh_test) under Bazel 9.1.0+
+bazel_dep(name = "rules_shell", version = "0.6.1")
 
 hugo_deps = use_extension("@rules_hugo_rmcguinness//hugo:extensions.bzl", "hugo_deps")
 
@@ -65,7 +67,8 @@ use_repo(hugo_deps, "hugo", "hugo_theme_geekdoc")
 ### Declare a hugo_site with a theme in your BUILD file
 
 ```python
-load("@rules_hugo_rmcguinness//hugo:rules.bzl", "hugo_site", "hugo_theme", "hugo_serve")
+load("@rules_hugo_rmcguinness//hugo:rules.bzl", "hugo_serve", "hugo_site", "hugo_theme")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 hugo_theme(
     name = "hugo_theme_geekdoc",
@@ -90,7 +93,13 @@ hugo_serve(
     name = "serve",
     dep = [":site_complex"],
 )
-```
+
+# Writing a test for your hugo_site
+sh_test(
+    name = "site_test",
+    srcs = ["site_test.sh"],
+    data = [":site_complex"],
+)
 ```
 
 ### Previewing the site
@@ -109,28 +118,31 @@ Then open your browser: [here](http://localhost:1313)
 The `hugo_site` target emits the output in the `bazel-bin` directory.
 
 ```sh
-$ bazel build :basic
+$ bazel build //site_complex:site_complex
 [...]
-Target //:basic up-to-date:
-  bazel-bin/basic
+Target //site_complex:site_complex up-to-date:
+  bazel-bin/site_complex/site_complex
 [...]
 ```
 ```sh
-$ tree bazel-bin/basic
-bazel-bin/basic
+$ tree bazel-bin/site_complex/site_complex
+bazel-bin/site_complex/site_complex
 ├── 404.html
-├── about
-│   └── index.html
+├── favicon.ico
 [...]
 ```
 
-The `pkg_tar` target emits a `%{name}_tar.tar` file containing all the Hugo output files.
+### Testing the site
+
+You can test that your Hugo site builds and outputs files successfully:
 
 ```sh
-$ bazel build :basic_tar
+$ bazel test //site_simple:site_test
 [...]
-Target //:basic up-to-date:
-  bazel-bin/basic_tar.tar
+Target //site_simple:site_test up-to-date:
+  bazel-bin/site_simple/site_test
+INFO: Elapsed time: 0.198s
+//site_simple:site_test                                                  PASSED
 ```
 
 ## End
