@@ -191,7 +191,7 @@
     "//hugo:extensions.bzl%hugo_deps": {
       "general": {
         "bzlTransitiveDigest": "oCwnpKhQ2pWXbI0OeyxXQzDWdho2H6zovWi2IaauuPE=",
-        "usagesDigest": "RGfnsjlVMS1uVRJfb2SK0jMQKOQ/4Bj0DWbjwR7/eMY=",
+        "usagesDigest": "rKM17eoqaN9hy58j97RP5F2AmfM08X7rGBYg9ANZm0A=",
         "recordedInputs": [
           "REPO_MAPPING:,bazel_tools bazel_tools"
         ],

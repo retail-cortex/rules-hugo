@@ -34,11 +34,11 @@
 In your `MODULE.bazel`:
 
 ```python
-bazel_dep(name = "rules_hugo_rmcguinness", version = "0.2.0")
+bazel_dep(name = "rules_hugo", version = "0.2.0")
 # Required to load shell rules (like sh_test) under Bazel 9.1.0+
 bazel_dep(name = "rules_shell", version = "0.6.1")
 
-hugo_deps = use_extension("@rules_hugo_rmcguinness//hugo:extensions.bzl", "hugo_deps")
+hugo_deps = use_extension("@rules_hugo//hugo:extensions.bzl", "hugo_deps")
 
 # Configure Hugo repository
 hugo_deps.hugo_repository(
@@ -67,7 +67,7 @@ use_repo(hugo_deps, "hugo", "hugo_theme_geekdoc")
 ### Declare a hugo_site with a theme in your BUILD file
 
 ```python
-load("@rules_hugo_rmcguinness//hugo:rules.bzl", "hugo_serve", "hugo_site", "hugo_theme")
+load("@rules_hugo//hugo:rules.bzl", "hugo_serve", "hugo_site", "hugo_theme")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 hugo_theme(

@@ -15,12 +15,12 @@ type: docs
 
 ## Add Module Dependencies
 
-Declare a dependency on `rules_hugo_rmcguinness` and the hugo binary as well as the theme in your `MODULE.bazel`:
+Declare a dependency on `rules_hugo` and the hugo binary as well as the theme in your `MODULE.bazel`:
 
 ```python
-bazel_dep(name = "rules_hugo_rmcguinness", version = "0.2.0")
+bazel_dep(name = "rules_hugo", version = "0.2.0")
 
-hugo_deps = use_extension("@rules_hugo_rmcguinness//hugo:extensions.bzl", "hugo_deps")
+hugo_deps = use_extension("@rules_hugo//hugo:extensions.bzl", "hugo_deps")
 
 # Configure Hugo repository
 hugo_deps.hugo_repository(
@@ -68,7 +68,7 @@ $ touch site/BUILD.bazel
 Having the following rules:
 
 ```python
-load("@rules_hugo_rmcguinness//hugo:rules.bzl", "hugo_site", "hugo_theme")
+load("@rules_hugo//hugo:rules.bzl", "hugo_site", "hugo_theme")
 
 hugo_theme(
     name = "book",
